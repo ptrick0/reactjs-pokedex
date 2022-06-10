@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import usePokemon from '../../hooks/pokemon-hooks';
 import PokemonCard from '../pokemon-card';
+import Controls from '../controls';
 import * as S from './styled';
 
 const Pokedex = () => {
@@ -18,10 +19,11 @@ const Pokedex = () => {
     };
 
     return (
-        <>
+        <>  
             <S.PokedexWrapper>
                 {renderPokemons()}
             </S.PokedexWrapper>
+            <Controls />
         </>
     );
 };

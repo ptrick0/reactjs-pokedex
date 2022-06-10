@@ -24,7 +24,7 @@ const PokemonCardWrapper = styled.div`
 const PokemonCardName = styled.h2`
     margin: 0px;
     padding: 0px 7px;
-    color: #096079;
+    color: #fff;
     background-color: #27c2ef;
     text-transform: capitalize;
     z-index: 2; 
@@ -37,12 +37,12 @@ const PokemonCardImageWrapper = styled.div`
     &:before {
         content: '';
         z-index: 1;
-        width: 210px;
+        width: 250px;
         height: 187px;
         background-image: linear-gradient(#27c2ef, #096079);
-        border-radius: 15px;
+        background: linear-gradient(180deg, #27c2ef, #0f9fca, #0f9fca, #27c2ef);
         position: absolute;
-        left: -7px;
+        left: -25px;
         top: 15px;
     }
 `;
@@ -55,18 +55,24 @@ const PokemonCardImage = styled.img`
 `;
 
 const PokemonCardStats = styled.ul`
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 5px;
+    padding: 0px;
     list-style-type: none;
     left: 0;
-    color: #096079;
+    color: #fff;
 `;
 
 const PokemonCardStatsItem = styled.li`
     display:flex;
     align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
     font-weight: bold;
+    background: radial-gradient(#20add6 30%, #27c2ef 65%);
+    
 `;
 
 const PokemonCardStatName = styled.span`

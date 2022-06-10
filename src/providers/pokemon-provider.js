@@ -1,25 +1,33 @@
 import React, { createContext, useCallback, useState } from 'react';
 import api from '../services/api';
+import { POKEMONS_PER_PAGE } from '../global/constants';
 
 export const PokemonContext = createContext({
+    hasPokemons: false,
     loading: false,
+    offset: 0,
+    count: 0,
     pokemons: [],
 });
 
 const PokemonProvider = ({ children }) => {
     const [pokemonState, setPokemonState] = useState({
+        hasPokemons: false,
         loading: false,
+        offset: 0,
+        count: 0,
         pokemons: []
     });
 
-    const getPokemons = () => {
+    const getPokemons = (pageOffset = 0) => {
         setPokemonState((prevState) => ({
             ...prevState,
+            offset: pageOffset,
             loading: true
         }));
         
         api
-        .get(`pokemon?limit=100000&offset=0`)
+        .get(`pokemon?limit=${POKEMONS_PER_PAGE}&offset=${pageOffset}`)
         .then(async (data) => {
             let mapPromises = data.data.results.map(async (element, key) => {
                 let url = element.url;
@@ -33,6 +41,8 @@ const PokemonProvider = ({ children }) => {
             
             setPokemonState((prevState) => ({
                 ...prevState,
+                hasPokemons: true,
+                count: data.data.count,
                 pokemons: pokemons
             }));
         })
@@ -40,6 +50,7 @@ const PokemonProvider = ({ children }) => {
             if (err.response.status === 404) {
                 setPokemonState((prevState) => ({
                     ...prevState,
+                    count: 0,
                     pokemons: []
                 }));
             }
@@ -57,6 +68,7 @@ const PokemonProvider = ({ children }) => {
 
         setPokemonState((prevState) => ({
             ...prevState,
+            hasPokemons: true,
             loading: true
         }));
 
@@ -81,7 +93,7 @@ const PokemonProvider = ({ children }) => {
 
     const contextValue = {
         pokemonState,
-        getPokemons: useCallback(() => getPokemons(), [])
+        getPokemons: useCallback((offset) => getPokemons(offset), [])
     };
 
     return (

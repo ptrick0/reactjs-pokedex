@@ -3,26 +3,28 @@ import usePokemon from './hooks/pokemon-hooks';
 import NoData from './components/no-data';
 import Pokedex from './components/pokedex';
 import Header from './components/header';
+import Loading from './components/loading';
 
 const App = () => {
 	const { pokemonState, getPokemons } = usePokemon();
-	const hasPokemon = pokemonState.pokemons.length !== 0;
 
 	useEffect(() => {
-        getPokemons();
+        getPokemons(0);
     }, []);
 
 	return (
 		<>
 			<Header />
-			{!hasPokemon ? (
+			{!pokemonState.hasPokemons ? (
 				<NoData />
 			) : (
 				<>
 					{pokemonState.loading ? (
-						<h1>Loading...</h1>
+						<Loading />
 					) : (
-						<Pokedex />
+						<>
+							<Pokedex />
+						</>
 					)}
 				</>
 			)}
