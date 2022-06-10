@@ -6,6 +6,7 @@ const PokedexWrapper = styled.div`
     justify-content: center;
     flex-wrap: wrap;
     background-color: #da3236;
+    padding-top: 50px;
 `;
 
 export {

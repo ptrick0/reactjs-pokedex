@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import usePokemon from './hooks/pokemon-hooks';
 import NoData from './components/no-data';
 import Pokedex from './components/pokedex';
+import Header from './components/header';
 
 const App = () => {
 	const { pokemonState, getPokemons } = usePokemon();
@@ -13,6 +14,7 @@ const App = () => {
 
 	return (
 		<>
+			<Header />
 			{!hasPokemon ? (
 				<NoData />
 			) : (

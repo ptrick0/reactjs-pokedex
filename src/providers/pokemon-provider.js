@@ -20,10 +20,20 @@ const PokemonProvider = ({ children }) => {
         
         api
         .get(`pokemon?limit=100000&offset=0`)
-        .then((data) => {
+        .then(async (data) => {
+            let mapPromises = data.data.results.map(async (element, key) => {
+                let url = element.url;
+                let urlSplitted = url.split("/");
+
+                let pokemon = await getPokemon(urlSplitted[urlSplitted.length - 2]);
+
+                return pokemon;
+            });
+            let pokemons = await Promise.all(mapPromises);
+            
             setPokemonState((prevState) => ({
                 ...prevState,
-                pokemons: data.data.results
+                pokemons: pokemons
             }));
         })
         .catch((err) => {
@@ -40,6 +50,33 @@ const PokemonProvider = ({ children }) => {
                 loading: false
             }));
         });
+    };
+
+    const getPokemon = async (pokemonId) => {
+        let pokemonData = {};
+
+        setPokemonState((prevState) => ({
+            ...prevState,
+            loading: true
+        }));
+
+        await api
+        .get(`pokemon/${pokemonId}`)
+        .then((data) => {
+            pokemonData = data.data;
+        })
+        .catch((err) => {
+            if (err.response.status === 404) {
+                pokemonData = {};
+            }
+        })
+        .finally(() => {
+            setPokemonState((prevState) => ({
+                ...prevState,
+                loading: false
+            }));
+        });
+        return pokemonData;
     };
 
     const contextValue = {
