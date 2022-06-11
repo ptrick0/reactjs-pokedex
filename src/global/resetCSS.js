@@ -6,7 +6,15 @@ export const ResetCSS = createGlobalStyle`
         padding: 0px;
         font-family: "Comic", "Comic Sans", sans-serif;
         background-color: #da3236;
-        overflow: hidden;
+
+        /* hide scrollbar but allow scrolling */
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+        
+        &::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
     }
 
     @keyframes rotate-image {
