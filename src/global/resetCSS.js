@@ -6,6 +6,7 @@ export const ResetCSS = createGlobalStyle`
         padding: 0px;
         font-family: "Comic", "Comic Sans", sans-serif;
         background-color: #da3236;
+        overflow: hidden;
     }
 
     @keyframes rotate-image {
@@ -27,7 +28,7 @@ export const ResetCSS = createGlobalStyle`
     }
 
     @keyframes twinkle {
-        0% {
+        /*0% {
             filter: brightness(40%);
         }
         50% {
@@ -35,7 +36,7 @@ export const ResetCSS = createGlobalStyle`
         }
         100% {
             filter: brightness(40%);
-        }
+        }*/
     }
 
     @keyframes backgroundTransition {

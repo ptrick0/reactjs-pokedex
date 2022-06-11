@@ -15,11 +15,10 @@ const ControlsWrapper = styled.div`
 const ControlsBasic = styled.div`
     display: flex;
     align-content: center;
-    justify-content: space-between;
+    justify-content: center;
 
     @media(max-width: 450px){
         flex-wrap: wrap;
-        justify-content: center;
         &>*:nth-child(2) {
             order: 1;
         }

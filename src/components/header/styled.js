@@ -23,19 +23,19 @@ const Header = styled.div`
 const HeaderDex = styled.div`
     width: 0;
     height: 0;
-    margin-top: 60px;
+    margin-top: 30px;
     z-index: 1;
     position: relative;
     border-top: 60px solid transparent;
-    border-bottom: 60px solid #da3236;
+    border-bottom: 30px solid #da3236;
     
     border-right: 60px solid #da3236;
 
     
     &:before {
         content: '';
-        width: calc(50vw - 30px - 7px);
-        height: 60px;
+        width: calc(50vw - 30px);
+        height: 30px;
         right: 0px;
         top: 0px;
         background-color: #da3236;
@@ -45,8 +45,8 @@ const HeaderDex = styled.div`
 
     &:after {
         content: '';
-        width: calc(50vw - 30px - 8px);
-        height: 120px;
+        width: calc(50vw - 30px);
+        height: 90px;
         left: 60px;
         top: -60px;
         background-color: #da3236;
@@ -56,8 +56,8 @@ const HeaderDex = styled.div`
 `;
 
 const HeaderDexContent = styled.div`
-    width: calc(50vw - 30px - 8px);
-    height: 80px;
+    width: calc(50vw - 30px);
+    height: 70px;
     left: 10px;
     top: -40px;
     background-color: transparent;
@@ -66,14 +66,9 @@ const HeaderDexContent = styled.div`
     align-items: center;
     justify-content: center;
 
-    @media(max-width: 1100px) {
-        width: calc(50vw - 30px - 8px);
-        left: calc(-50vw + 60px);
-        top: -60px;
-    }
-
-    @media(max-width: 500px) {
-        width: calc(100vw);
+    @media(max-width: 1000px) {
+        width: 98vw;
+        top: -50px;
         left: calc(-50vw + 30px);
     }
 `;
@@ -82,8 +77,10 @@ const HeaderText = styled.h1`
     font-size: 64px;
     margin: 0px;
     width: 50%;
+    display: flex;
 
     @media(max-width: 700px) {
+        justify-content: center;
         margin-bottom: 50px;
     }
 `;
@@ -92,6 +89,11 @@ const HeaderDetails = styled.div`
     display: flex;
     width: 50%;
     margin-left: 60px;
+    
+    @media(max-width: 700px) {
+        margin-left: 0px;
+        justify-content: center;
+    }
 `;
 
 const LightsDex = styled.div`
@@ -127,7 +129,7 @@ const LightItem = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    filter: brightness(40%);
+    filter: brightness(100%);
 `;
     
 const DomeDex = styled.div`
