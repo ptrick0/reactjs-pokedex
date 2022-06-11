@@ -6,9 +6,27 @@ const ControlsWrapper = styled.div`
     align-content: center;
     justify-content: center;
     margin: 0px 80px;
+
+    @media(max-width: 1100px) {
+        margin: 0px;
+    }
 `;
 
 const ControlsBasic = styled.div`
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+
+    @media(max-width: 450px){
+        flex-wrap: wrap;
+        justify-content: center;
+        &>*:nth-child(2) {
+            order: 1;
+        }
+    }
+`;
+
+const Resumed = styled.div`
     display: flex;
     align-content: center;
     justify-content: space-between;
@@ -22,9 +40,9 @@ const ControlsAdvanced = styled.div`
 `;
 
 const PageNum = styled.button`
-display:flex;
-align-items: center;
-justify-content: center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
@@ -50,6 +68,7 @@ justify-content: center;
 export {
     ControlsWrapper,
     ControlsBasic,
+    Resumed,
     ControlsAdvanced,
     PageNum
 }

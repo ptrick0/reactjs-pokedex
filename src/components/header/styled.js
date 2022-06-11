@@ -24,6 +24,7 @@ const HeaderDex = styled.div`
     width: 0;
     height: 0;
     margin-top: 60px;
+    z-index: 1;
     position: relative;
     border-top: 60px solid transparent;
     border-bottom: 60px solid #da3236;
@@ -51,6 +52,29 @@ const HeaderDex = styled.div`
         background-color: #da3236;
         position: absolute;
         z-index: 1;
+    }
+`;
+
+const HeaderDexContent = styled.div`
+    width: calc(50vw - 30px - 8px);
+    height: 80px;
+    left: 10px;
+    top: -40px;
+    background-color: transparent;
+    position: absolute;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+
+    @media(max-width: 1100px) {
+        width: calc(50vw - 30px - 8px);
+        left: calc(-50vw + 60px);
+        top: -60px;
+    }
+
+    @media(max-width: 500px) {
+        width: calc(100vw);
+        left: calc(-50vw + 30px);
     }
 `;
 
@@ -120,6 +144,7 @@ export {
     HeaderWrapper,
     Header,
     HeaderDex,
+    HeaderDexContent,
     HeaderText,
     HeaderDetails,
     LightsDex,

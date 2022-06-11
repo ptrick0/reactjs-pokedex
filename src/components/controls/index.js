@@ -5,10 +5,11 @@ import { IconContext } from 'react-icons';
 import { BiRightArrow, BiLeftArrow } from 'react-icons/bi';
 import * as S from './styled';
 
-const Controls = () => {
+const Controls = (props) => {
     const { pokemonState, getPokemons } = usePokemon();
     const [ totalPages, setTotalPages ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(1);
+    const { resumed } = props;
 
     useEffect(() => {
         setTotalPages(Math.ceil(pokemonState.count / POKEMONS_PER_PAGE));
@@ -18,15 +19,30 @@ const Controls = () => {
         setCurrentPage(Math.ceil(pokemonState.offset / POKEMONS_PER_PAGE) + 1);
     }, [pokemonState.offset])
 
+    const getFormattedKey = (key) => {
+        return ("00" + (key+1)).slice(-2);
+    };
+
     const renderPages = () => {
         return (
             Array.from({length: totalPages}, (element, key) => {
                 const isCurrent = currentPage === key+1;
-                const formattedKey = ("00" + (key+1)).slice(-2);
+                const formattedKey = getFormattedKey(key);
                 return <React.Fragment key={`page-${key}`}>
                     <S.PageNum onClick={() => goToPage(key)} className={`${isCurrent ? "current" : ""}`}>{formattedKey}</S.PageNum>
                 </React.Fragment>
             })
+        );
+    };
+
+    const renderResumedPages = () => {
+        const formattedCurrentKey = getFormattedKey(currentPage-1);
+        return (
+            <>
+                <S.PageNum onClick={() => goToPage(0)}>First</S.PageNum>
+                <S.PageNum className="current">{formattedCurrentKey}</S.PageNum>
+                <S.PageNum onClick={() => goToPage(totalPages-1)}>Last</S.PageNum>
+            </>
         );
     };
 
@@ -61,14 +77,25 @@ const Controls = () => {
                             <BiLeftArrow/>
                             Previous
                         </S.PageNum>
+                        {resumed ? (
+                            <S.Resumed>
+                                {renderResumedPages()}
+                            </S.Resumed>
+                        ) : (
+                            <></>
+                        )}
                         <S.PageNum onClick={nextOffset}>
                             Next
                             <BiRightArrow/>
                         </S.PageNum>
                     </S.ControlsBasic>
-                    <S.ControlsAdvanced>
-                        {renderPages()}
-                    </S.ControlsAdvanced>
+                    {!resumed ? (
+                        <S.ControlsAdvanced>
+                            {renderPages()}
+                        </S.ControlsAdvanced>
+                    ) : (
+                        <></>
+                    ) }
                 </S.ControlsWrapper>
             </IconContext.Provider>
         </>

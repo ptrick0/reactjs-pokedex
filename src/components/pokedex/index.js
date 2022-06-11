@@ -23,7 +23,7 @@ const Pokedex = () => {
             <S.PokedexWrapper>
                 {renderPokemons()}
             </S.PokedexWrapper>
-            <Controls />
+            <Controls resumed={false}/>
         </>
     );
 };

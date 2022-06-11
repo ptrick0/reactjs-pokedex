@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from './styled';
+import Controls from '../controls';
 
 const Header = () => {
     return (
@@ -17,7 +18,11 @@ const Header = () => {
                 <S.HeaderText>Pokedéx</S.HeaderText>
                 
             </S.Header>
-            <S.HeaderDex />
+            <S.HeaderDex>
+                <S.HeaderDexContent>
+                    <Controls resumed={true}/>
+                </S.HeaderDexContent>
+            </S.HeaderDex>
         </S.HeaderWrapper>
     );
 };
