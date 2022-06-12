@@ -19,6 +19,14 @@ const Button = styled.button`
         cursor: pointer;
     }
 
+    &:disabled {
+        &:hover {
+            transform: none;
+            box-shadow: none;
+            cursor: auto;
+        }
+    }
+
     &.current {
         background-color: #fff;
         color: #27c2ef;

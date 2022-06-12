@@ -36,15 +36,15 @@ export const ResetCSS = createGlobalStyle`
     }
 
     @keyframes twinkle {
-        /*0% {
-            filter: brightness(40%);
-        }
-        50% {
+        0% {
             filter: brightness(100%);
         }
-        100% {
+        50% {
             filter: brightness(40%);
-        }*/
+        }
+        100% {
+            filter: brightness(100%);
+        }
     }
 
     @keyframes backgroundTransition {
@@ -56,6 +56,24 @@ export const ResetCSS = createGlobalStyle`
         }
         100% {
             background-position: 0% 80%;
+        }
+    }
+
+    @keyframes shake {
+        0% {
+            tranform: translateX(0px);
+        }
+        25% {
+            transform: translateX(-10px);
+        }
+        50% {
+            transform: translateX(0px);
+        }
+        75% {
+            transform: translateX(10px);
+        }
+        100% {
+            tranform: translateX(0px);
         }
     }
 `;

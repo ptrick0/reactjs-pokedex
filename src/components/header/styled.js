@@ -107,21 +107,27 @@ const LightsDex = styled.div`
     &>*:nth-child(1) {
         background-color: #ff1a1f;
         border: 1px solid #c10005;
-        animation: twinkle 1.5s ease-in-out infinite;
+        &.twinkle {
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
     }
 
     &>*:nth-child(2) {
         background-color: #e9ba01;
         border: 1px solid #ba9501;
-        animation: twinkle 1.5s ease-in-out infinite;
-        animation-delay: 0.2s;
+        &.twinkle {
+            animation: twinkle 1.5s ease-in-out infinite;
+            animation-delay: 0.2s;
+        }
     }
 
     &>*:nth-child(3) {
         background-color: #04ca36;
         border: 1px solid #039427;
-        animation: twinkle 1.5s ease-in-out infinite;
-        animation-delay: 0.4s;
+        &.twinkle {
+            animation: twinkle 1.5s ease-in-out infinite;
+            animation-delay: 0.4s;
+        }
     }
 `;
 
