@@ -63,14 +63,54 @@ const PokemonProvider = ({ children }) => {
         });
     };
 
-    const getPokemon = async (pokemonId) => {
-        let pokemonData = {};
 
+    const getRandomPokemons = async (num) => {
         setPokemonState((prevState) => ({
             ...prevState,
-            hasPokemons: true,
             loading: true
         }));
+
+        let allPokemons = [];
+        let pokemons = [];
+        
+        await api
+        .get(`pokemon?limit=999999`)
+        .then(async (data) => {
+            let mapPromises = data.data.results.map(async (element, key) => {
+                let url = element.url;
+                let urlSplitted = url.split("/");
+
+                let pokemon = await getPokemon(urlSplitted[urlSplitted.length - 2]);
+
+                return pokemon;
+            });
+            allPokemons = await Promise.all(mapPromises);
+
+            for(let i = 0; i < num; i++) {
+                const rand = Math.floor(Math.random() * allPokemons.length);
+                pokemons.push(allPokemons[rand]);
+                allPokemons.splice(rand, 1);
+            }
+        })
+        .catch((err) => {
+            if (err.response.status === 404) {
+                setPokemonState((prevState) => ({
+                    ...prevState
+                }));
+            }
+        })
+        .finally(() => {
+            setPokemonState((prevState) => ({
+                ...prevState,
+                loading: false
+            }));
+        });
+
+        return pokemons;
+    }
+
+    const getPokemon = async (pokemonId) => {
+        let pokemonData = {};
 
         await api
         .get(`pokemon/${pokemonId}`)
@@ -82,18 +122,13 @@ const PokemonProvider = ({ children }) => {
                 pokemonData = {};
             }
         })
-        .finally(() => {
-            setPokemonState((prevState) => ({
-                ...prevState,
-                loading: false
-            }));
-        });
         return pokemonData;
     };
 
     const contextValue = {
         pokemonState,
-        getPokemons: useCallback((offset) => getPokemons(offset), [])
+        getPokemons: useCallback((offset) => getPokemons(offset)),
+        getRandomPokemons: useCallback((num) => getRandomPokemons(num))
     };
 
     return (

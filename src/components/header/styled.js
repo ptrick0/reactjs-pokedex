@@ -133,6 +133,9 @@ const LightItem = styled.div`
 `;
     
 const DomeDex = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -140,6 +143,10 @@ const DomeDex = styled.div`
     background: linear-gradient(-45deg, #0f9fca, #27c2ef, #8cdff7);
     background-size: 300px 300px;
     animation: backgroundTransition 5s ease-in-out infinite;
+
+    &>a {
+        color: #fff;
+    }
 `;
 
 export {

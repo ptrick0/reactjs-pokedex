@@ -51,7 +51,6 @@ const PokemonCardImage = styled.img`
     width: 200px;
     position: relative;
     z-index: 2;
-    /*filter: brightness(0%);*/
 `;
 
 const PokemonCardStats = styled.ul`
