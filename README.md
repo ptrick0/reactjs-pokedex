@@ -1,6 +1,23 @@
-# Getting Started with Create React App
+# Pokédex created with ReactJS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Pokédex is an electronic device created and designed to catalog and provide information regarding the various species of Pokémon. Based on this, I was created a web version to simulate this device with all pokémons. In addiction, I had an idea to create the famous game "Who's that pokémon?".
+
+This project calls [PokeAPI](https://pokeapi.co) with axios request, react styled-components, css animations and transitions.
+
+![image](https://user-images.githubusercontent.com/33580921/174077085-d8ac3216-893d-4427-81ed-ca52b884ef04.png)
+
+## "Who's that pokémon?" Game
+
+The game is based on Pokémon TV show break game. To play, click on blue play button on top-left of the screen, wait for loading and select an option.
+If the answer is correct:
+
+![image](https://user-images.githubusercontent.com/33580921/174075078-f130a095-0ec5-4164-b33d-e6fdf8dd87fb.png)
+and after, a new pokémon is loaded.
+
+If the answer is wrong:
+
+![image](https://user-images.githubusercontent.com/33580921/174075335-900ff1de-2c1f-481a-9735-ad3c01972e1f.png)
+and after, waits for a new answer until correct.
 
 ## Available Scripts
 
