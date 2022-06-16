@@ -4,6 +4,8 @@ The Pokédex is an electronic device created and designed to catalog and provide
 
 This project calls [PokeAPI](https://pokeapi.co) with axios request, react styled-components, css animations and transitions.
 
+Check it out [here](ptrick0.github.io/reactjs-pokedex)
+
 ![image](https://user-images.githubusercontent.com/33580921/174077085-d8ac3216-893d-4427-81ed-ca52b884ef04.png)
 
 ## "Who's that pokémon?" Game
@@ -30,6 +32,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### `npm run deploy`
+
+Runs gh-pages build and deploy to serve app on github pages.
+To do that, is necessary to add basename on Router, like that:
+<Router basename='/reactjs-pokedex'>
 
 ### `npm test`
 
