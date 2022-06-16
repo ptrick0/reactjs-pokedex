@@ -4,7 +4,7 @@ The Pokédex is an electronic device created and designed to catalog and provide
 
 This project calls [PokeAPI](https://pokeapi.co) with axios request, react styled-components, css animations and transitions.
 
-Check it out [here](ptrick0.github.io/reactjs-pokedex)
+Check it out [here](https://ptrick0.github.io/reactjs-pokedex)
 
 ![image](https://user-images.githubusercontent.com/33580921/174077085-d8ac3216-893d-4427-81ed-ca52b884ef04.png)
 
