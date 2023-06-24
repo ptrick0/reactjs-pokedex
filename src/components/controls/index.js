@@ -37,10 +37,12 @@ const Controls = (props) => {
 
     const renderResumedPages = () => {
         const formattedCurrentKey = getFormattedKey(currentPage-1);
+        const formattedLastPage = getFormattedKey(totalPages-1);
         return (
             <>
                 <S.PageNum onClick={() => goToPage(0)}>First</S.PageNum>
                 <S.PageNum className="current">{formattedCurrentKey}</S.PageNum>
+                <S.PageNum disabled>{`of ${formattedLastPage}`}</S.PageNum>
                 <S.PageNum onClick={() => goToPage(totalPages-1)}>Last</S.PageNum>
             </>
         );
