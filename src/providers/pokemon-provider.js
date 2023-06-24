@@ -212,8 +212,6 @@ const PokemonProvider = ({ children }) => {
         
         allPokemons = await getPokemonsOnStorage();
 
-        console.log(allPokemons)
-
         for(let i = 0; i < num; i++) {
             const rand = Math.floor(Math.random() * allPokemons.length);
             pokemons.push(allPokemons[rand]);
