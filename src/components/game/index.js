@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as S from './styled';
 import usePokemon from '../../hooks/pokemon-hooks';
 import Loading from '../loading';
@@ -10,14 +10,19 @@ const Game = () => {
     const [ image, setImage ] = useState(Pokeball);
     const [ correctAnswer, setCorrectAnswer ] = useState('');
     const [ buttonDisabled, setButtonDisabled ] = useState(false);
-
-    useEffect(() => {
-        initialize();
-    }, []);
+    const firstRender = useRef(true);
 
     useEffect(() => {
         ableOptionButtons();
     }, [buttonDisabled]);
+
+    useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        initialize();
+    }, []);
 
     const ableOptionButtons = () => {
         const buttons = document.getElementsByClassName("optionButton");
@@ -47,30 +52,42 @@ const Game = () => {
         return pokemonImages.find((element) => element !== null);
     };
 
+    const correctAnswerFeedback = (event) => {
+        const gameImg = document.getElementById("gameImg");
+        setButtonDisabled(true);
+        gameImg.classList.add("bright");
+        event.target.classList.add("correct");
+    }
+
+    const wrongAnswerFeedback = (event) => {
+        setButtonDisabled(true);
+        event.target.classList.add("wrong");
+    }
+
+    const resetAnswer = (event) => {
+        event.target.classList.remove("correct");
+        event.target.classList.remove("wrong");
+        setButtonDisabled(false);
+    }
+
+    const resetGame = (event) => {
+        const gameImg = document.getElementById("gameImg");
+        gameImg.classList.remove("bright");
+        resetAnswer(event);
+        initialize();
+    }
+
     const verifyAnswer = (answer, event) => {
         if (answer === correctAnswer) {
-            // Turn brightness on to image
-            const gameImg = document.getElementById("gameImg");
-            setButtonDisabled(true);
-            gameImg.classList.add("bright");
-            // Turn color on correct button answer
-            event.target.classList.add("correct");
+            correctAnswerFeedback(event);
             setTimeout(() => {
-                gameImg.classList.remove("bright");
-                event.target.classList.remove("correct");
-                setButtonDisabled(false);
-                initialize();
+                resetGame(event);
             }, 3000);
-            // TODO - load new pokemon image
         } else {
-            setButtonDisabled(true);
-            // Turn color on correct button answer
-            event.target.classList.add("wrong");
+            wrongAnswerFeedback(event);
             setTimeout(() => {
-                event.target.classList.remove("wrong");
-                setButtonDisabled(false);
+                resetAnswer(event);
             }, 3000);
-            // TODO - load new pokemon image
         }
     };
 

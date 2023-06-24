@@ -19,6 +19,8 @@ const PokemonProvider = ({ children }) => {
         pokemons: []
     });
 
+    const databaseName = "PokemonDb";
+
     const getPokemons = (pageOffset = 0) => {
         setPokemonState((prevState) => ({
             ...prevState,
@@ -33,7 +35,7 @@ const PokemonProvider = ({ children }) => {
                 let url = element.url;
                 let urlSplitted = url.split("/");
 
-                let pokemon = await getPokemon(urlSplitted[urlSplitted.length - 2]);
+                let pokemon = await getPokemonDetails(urlSplitted[urlSplitted.length - 2]);
 
                 return pokemon;
             });
@@ -63,8 +65,143 @@ const PokemonProvider = ({ children }) => {
         });
     };
 
+    const getPokemonDetails = async (pokemonId) => {
+        let pokemonData = {};
 
-    const getRandomPokemons = async (num) => {
+        await api
+            .get(`pokemon/${pokemonId}`)
+            .then(({ data }) => {
+                pokemonData = {
+                    id: data.id,
+                    name: data.name,
+                    sprites: data.sprites,
+                    stats: data.stats,
+                    weight: data.weight,
+                    height: data.height
+                }
+            })
+            .catch((err) => {
+                if (err.response.status === 404) {
+                    pokemonData = {};
+                }
+            })
+        return pokemonData;
+    };
+
+    const savePokemonOnDb = (pokemonData) => {
+        const indexedDB =
+            window.indexedDB ||
+            window.mozIndexedDB ||
+            window.webkitIndexedDB ||
+            window.msIndexedDB ||
+            window.shimIndexedDB;
+
+        if (!indexedDB) {
+            console.warn('IndexedDB not supported')
+            return
+        }
+
+        const dbRequest = indexedDB.open(databaseName);
+
+        dbRequest.onerror = () => {
+            console.log(`${databaseName} database open error`);
+        };
+
+        dbRequest.onsuccess = () => {
+            const db = dbRequest.result;
+            const dbTransaction = db.transaction("pokemons", "readwrite")
+            const pokemonObjectStore = dbTransaction.objectStore("pokemons");
+
+            pokemonObjectStore.put(pokemonData);
+
+            dbTransaction.oncomplete = () => db.close();
+        };
+
+        dbRequest.onupgradeneeded = () => {
+            const db = dbRequest.result;
+
+            const objectStore = db.createObjectStore("pokemons", { keyPath: "id" });
+          
+            objectStore.createIndex("name", "name", { unique: false });
+
+            objectStore.createIndex("id", "id", { unique: true });
+        };
+    };
+
+    const storageAllPokemons = async () => {
+        setPokemonState((prevState) => ({
+            ...prevState,
+            loading: true
+        }));
+        
+        await api
+            .get(`pokemon?limit=999999`)
+            .then(async ({ data }) => {
+                for(const element of data.results) {
+                    let url = element.url;
+                    let urlSplitted = url.split("/");
+
+                    await getPokemonDetails(urlSplitted[urlSplitted.length - 2])
+                        .then((pokemon) => savePokemonOnDb(pokemon));
+                };
+            })
+            .catch((err) => {
+                console.log('Error to save pokemons on database', err);
+            })
+            .finally(() => {
+                setPokemonState((prevState) => ({
+                    ...prevState,
+                    loading: false
+                }));
+            });
+    };
+
+    const queryAllPokemons = () => {
+        return new Promise((resolve, reject) => {
+            const dbRequest = indexedDB.open(databaseName);
+
+            dbRequest.onsuccess = () => {
+                const db = dbRequest.result;
+                const dbTransaction = db.transaction("pokemons", "readonly");
+                const dbStorage = dbTransaction.objectStore("pokemons");
+
+                const pokemonsQuery = dbStorage.getAll();
+                
+                pokemonsQuery.onsuccess = () => {
+                    resolve(pokemonsQuery.result);
+                };
+
+                dbTransaction.oncomplete = () => db.close();
+            }
+        });
+    };
+
+    const getPokemonsOnStorage = async () => {
+        const indexedDB =
+            window.indexedDB ||
+            window.mozIndexedDB ||
+            window.webkitIndexedDB ||
+            window.msIndexedDB ||
+            window.shimIndexedDB;
+
+        if (!indexedDB) {
+            console.warn('IndexedDB not supported')
+            return
+        }
+
+        const isCreatedDb = (await indexedDB.databases()).map(db => db.name).includes(databaseName);
+
+        if (!isCreatedDb) {
+            await storageAllPokemons();
+        }
+
+        const pokemons = await queryAllPokemons();
+
+        return pokemons;
+        
+    };
+
+    const getRandomPokemonsWithDb = async (num) => {
         setPokemonState((prevState) => ({
             ...prevState,
             loading: true
@@ -73,62 +210,29 @@ const PokemonProvider = ({ children }) => {
         let allPokemons = [];
         let pokemons = [];
         
-        await api
-        .get(`pokemon?limit=999999`)
-        .then(async (data) => {
-            let mapPromises = data.data.results.map(async (element, key) => {
-                let url = element.url;
-                let urlSplitted = url.split("/");
+        allPokemons = await getPokemonsOnStorage();
 
-                let pokemon = await getPokemon(urlSplitted[urlSplitted.length - 2]);
+        console.log(allPokemons)
 
-                return pokemon;
-            });
-            allPokemons = await Promise.all(mapPromises);
+        for(let i = 0; i < num; i++) {
+            const rand = Math.floor(Math.random() * allPokemons.length);
+            pokemons.push(allPokemons[rand]);
+            allPokemons.splice(rand, 1);
+        }
 
-            for(let i = 0; i < num; i++) {
-                const rand = Math.floor(Math.random() * allPokemons.length);
-                pokemons.push(allPokemons[rand]);
-                allPokemons.splice(rand, 1);
-            }
-        })
-        .catch((err) => {
-            if (err.response.status === 404) {
-                setPokemonState((prevState) => ({
-                    ...prevState
-                }));
-            }
-        })
-        .finally(() => {
-            setPokemonState((prevState) => ({
-                ...prevState,
-                loading: false
-            }));
-        });
+        setPokemonState((prevState) => ({
+            ...prevState,
+            loading: false
+        }));
 
         return pokemons;
-    }
-
-    const getPokemon = async (pokemonId) => {
-        let pokemonData = {};
-
-        await api
-        .get(`pokemon/${pokemonId}`)
-        .then((data) => {
-            pokemonData = data.data;
-        })
-        .catch((err) => {
-            if (err.response.status === 404) {
-                pokemonData = {};
-            }
-        })
-        return pokemonData;
     };
 
     const contextValue = {
         pokemonState,
         getPokemons: useCallback((offset) => getPokemons(offset)),
-        getRandomPokemons: useCallback((num) => getRandomPokemons(num))
+        getRandomPokemons: useCallback((num) => getRandomPokemonsWithDb(num)),
+        storageAllPokemons: useCallback(() => storageAllPokemons())
     };
 
     return (
